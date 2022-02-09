@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  mysqlapp:
+    platform: linux/x86_64
+    image: mysql:8
+    hostname: mysqlapp
+    ports:
+      - "3306:3306"
+    volumes:
+      - ~/apps/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: MYRETROAPPDB
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: r00t
+    networks:
+      - backend
+  backendapp:
+    build: ./my_retro_rest-master
+    restart: on-failure
+    depends_on: 
+      - mysqlapp
+    ports:
+      - "8083:8083"
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysqlapp:3306/MYRETROAPPDB?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - backend
+  #clientapp:
+   # build: ./myretro-ui
+    #depends_on: 
+     # - backendapp
+    #ports:
+      #- "9528:9528"
+    #networks:
+      #- backend
+
+  # Volumes
+volumes:
+  db-data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+
+  
