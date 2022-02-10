@@ -1,5 +1,5 @@
 # myretro
-Base project folder for MyRetro Be and Frontend applications
+Base project folder for MyRetro Be and Frontend applications to working with docker compose
 
 BE: https://github.com/azatugurlu/myretro-rest
 
